@@ -1,0 +1,33 @@
+---
+type: spine
+
+# Spine Switches
+spine:
+  defaults:
+    platform: 7050CX3-32S
+    
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    loopback_ipv4_pool: 10.10.1.0/24
+    mlag_peer_ipv4_pool: 10.250.1.0/31
+    mlag_peer_l3_ipv4_pool: 10.251.1.0/31
+    mlag_interfaces: [Ethernet31/1, Ethernet32/1]
+
+  node_groups:
+    - group: BA_SPINES
+      bgp_as: 65001
+
+      nodes:
+        - name: BA-Spine1
+          id: 1
+          mgmt_ip: 172.100.36.11/24
+          rack: RACK1
+          serial_number: BASPINE1
+          system_mac_address: 00:1c:11:11:ba:01
+
+        - name: BA-Spine2
+          id: 2
+          mgmt_ip: 172.100.36.12/24
+          rack: RACK2
+          serial_number: BASPINE2
+          system_mac_address: 00:1c:11:11:ba:02

@@ -1,0 +1,80 @@
+path: []
+inputs:
+  authenticationProfiles:
+    - aaaConfiguration: {}
+      advancedRadiusConfiguration:
+        radiusServerFallback:
+          deadtime: 2
+          retransmit: 3
+          timeout: 2
+        radiusServerMonitoring:
+          probeConfiguration:
+            interval: 10
+            method: Status-Server
+            threshold: 3
+          radiusServerMonitoring: false
+      advancedTacacsConfiguration: {}
+      authenticationSourceVrf: null
+      dot1XConfiguration:
+        dot1XAccounting:
+          serverGroup: agni-group
+          type: Start And Stop
+        dot1XAuthentication:
+          serverGroup: agni-group
+      eosCli: null
+      profileName: aaa-profile
+      sourceInterface: {}
+  authenticationServers:
+    radiusServers:
+      - encryptionKey: null
+        host: radsec.beta.agni.arista.io
+        radiusOverTls:
+          sslProfile: agni-profile
+          tls: true
+  localAuthentication:
+    localUsers:
+      - name: admin
+        password: '**********'
+        privilege: 15
+        role: network-admin
+  localUserGroups:
+    - groupUsers:
+        - admin
+      overrideUsers: []
+      userGroupName: admin
+  profileAssignment:
+    - inputs:
+        profileAssignment:
+          authenticationProfile: aaa-profile
+      tags:
+        query: Role:Member-Leaf AND Campus:ABC_CAMPUS
+    - inputs:
+        profileAssignment:
+          authenticationProfile: aaa-profile
+      tags:
+        query: Role:Leaf AND Campus:ABC_CAMPUS
+  serverGroups:
+    - name: agni-group
+      radiusServers:
+        - radsec.beta.agni.arista.io
+      serverGroupType: RADIUS
+      tacacsServers: []
+  sourceVRFInterfaces:
+    - inputs:
+        sourceVRFInterfacesGroup:
+          authenticationSourceVrf: null
+          sourceInterface: Vlan900
+      tags:
+        query: Role:Member-Leaf AND Campus:ABC_CAMPUS
+    - inputs:
+        sourceVRFInterfacesGroup:
+          authenticationSourceVrf: MGMT
+          sourceInterface: Use OOB Management Interface
+      tags:
+        query: Role:Leaf AND Campus:ABC_CAMPUS
+  userAssignments:
+    - inputs:
+        userAssignment:
+          userGroup: admin
+      tags:
+        query: Campus:ABC_CAMPUS

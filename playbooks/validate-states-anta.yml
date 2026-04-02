@@ -1,0 +1,18 @@
+---
+- name: "Run Fabric states validation"
+  hosts: DC_ALL
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Validate states on EOS devices
+      import_role:
+        name: arista.avd.anta_runner
+      vars:
+        avd_catalogs_enabled: true
+        avd_catalogs_allow_bgp_vrfs: true
+        anta_runner_timeout: 30
+        anta_runner_batch_size: 10
+        anta_runner_dry_run: false
+        avd_catalogs_filters:
+          - skip_tests: [ VerifyLoggingErrors, VerifyInterfaceDiscards ]
+      ignore_errors: true

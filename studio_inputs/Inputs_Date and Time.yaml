@@ -1,0 +1,41 @@
+path: []
+inputs:
+  ntpServerResolver:
+    - inputs:
+        ntpServers:
+          - iburst: false
+            ntpServer: 216.239.35.0
+            preferred: true
+            vrf: MGMT
+      tags:
+        query: Campus-Pod:BUILDING_A AND NOT Role:Member-Leaf
+    - inputs:
+        ntpServers:
+          - iburst: false
+            ntpServer: 216.239.35.0
+            preferred: true
+            vrf: null
+      tags:
+        query: Campus-Pod:BUILDING_A AND Role:Member-Leaf
+  ntpSourceInterfaceResolver:
+    - inputs:
+        ntpSourceInterfaceGroup:
+          managementVrf: MGMT
+          sourceAddress: null
+          sourceInterface: Use OOB Management Interface
+      tags:
+        query: Campus-Pod:BUILDING_A AND NOT Role:Member-Leaf
+    - inputs:
+        ntpSourceInterfaceGroup:
+          managementVrf: default
+          sourceAddress: null
+          sourceInterface: Vlan900
+      tags:
+        query: Campus-Pod:BUILDING_A AND Role:Member-Leaf
+  timezoneResolver:
+    - inputs:
+        timezoneGroup:
+          otherTimezone: null
+          timezone: CET
+      tags:
+        query: Campus:ABC_CAMPUS

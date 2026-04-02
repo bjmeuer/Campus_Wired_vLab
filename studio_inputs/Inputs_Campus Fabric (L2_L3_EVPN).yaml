@@ -1,0 +1,212 @@
+path: []
+inputs:
+  advancedFabricSettings:
+    fabricIpAddressing:
+      mlag:
+        ipAddressing: same_subnet
+    inbandZtp:
+      inbandZtpInterfaces:
+        devices:
+          - interfaces: Ethernet48
+            tagQuery:
+              tags:
+                query: Campus-Pod:BUILDING_A AND Role:Leaf
+      interfaceZtpMethod: access
+    legacyStudioBehaviors:
+      bgpRedistributeAttachedHostsBehavior: false
+      varpConvention: true
+    platformSettings: []
+  campus:
+    - inputs:
+        campusDetails:
+          campusPod:
+            - inputs:
+                campusPodFacts:
+                  accessPodDefaults:
+                    bgpDetails:
+                      bgpAsns: 65001-65535
+                      bgpDistance:
+                        externalRoutes: 20
+                        internalRoutes: 200
+                        localRoutes: 200
+                      bgpGracefulRestart:
+                        enabled: true
+                        restartTime: 300
+                      maximumPaths:
+                        bgpEcmp: 4
+                        bgpMaximumPaths: 4
+                    mlagDetails:
+                      mlagDomainId: Use Group Name
+                      mlagPeerIPv4Pool: 169.254.0.0/31
+                      mlagPeerL3IPv4Pool: 169.254.1.0/31
+                      mlagPeerL3Vlan: 4093
+                      mlagPeerVlan: 4094
+                      mlagPortChannelId: 2000
+                      virtualRouterMacAddress: 00:1c:73:00:00:99
+                    routerIdPool: 10.10.1.0/24
+                    spanningTreeDetails:
+                      leafSpanningTreePriority: 4096
+                      spanningTreeMode: MSTP
+                    uplinkIpv4Pool: 172.15.0.0/24
+                    vtepLoopbackIPv4Pool: 10.11.1.0/24
+                  accessPods:
+                    - inputs:
+                        accessPodFacts: {}
+                      tags:
+                        query: Access-Pod:BA_IDF1
+                  advancedFabricSettings: {}
+                  campusPodRoutingProtocols:
+                    campusPodOverlayRoutingProtocol: eBGP
+                    campusPodUnderlayRoutingProtocol: eBGP
+                  design:
+                    campusType: L3
+                    vxlanOverlay: true
+                  egressConnectivity: {}
+                  fabricConfigurations:
+                    inbandManagementDetails:
+                      accessPods: []
+                      inbandManagementSubnet: 172.100.37.0/24
+                      inbandManagementVlan: 900
+                    ipLocking:
+                      enable: false
+                      ipv4LockingEnforcementEnabled: true
+                      ipv6LockingEnforcementEnabled: true
+                  nodeTypeProperties:
+                    defaultLeafProperties:
+                      leafConnectedEndpointsDefault: 'Yes'
+                      leafEvpnRoleDefault: Client
+                      leafL2NetworkServicesDefault: 'Yes'
+                      leafL3NetworkServicesDefault: 'Yes'
+                      leafMlagSupport: 'Yes'
+                      leafUnderlayRouter: 'Yes'
+                      leafUplinkType: P2P
+                      leafVtepDefault: 'Yes'
+                    defaultMemberLeafProperties:
+                      memberLeafMlagSupportDefault: 'No'
+                    defaultSpineProperties:
+                      spineConnectedEndpointsDefault: 'No'
+                      spineEvpnRoleDefault: Server
+                      spineL2NetworkServicesDefault: 'Yes'
+                      spineL3NetworkServicesDefault: 'Yes'
+                      spineMlagSupportDefault: 'No'
+                      spineUnderlayRouter: 'Yes'
+                      spineVtepDefault: 'Yes'
+                  spineDefaults:
+                    bgpDetails:
+                      bgpAsns: '65000'
+                      bgpDistance:
+                        externalRoutes: 20
+                        internalRoutes: 200
+                        localRoutes: 200
+                      bgpGracefulRestart:
+                        enabled: true
+                        restartTime: 300
+                      bgpUpdateWaitForConvergence: false
+                      bgpUpdateWaitInstall: false
+                      maximumPaths:
+                        bgpEcmp: 4
+                        bgpMaximumPaths: 4
+                    mlagDetails:
+                      mlagDomainId: Use Group Name
+                      mlagPeerIPv4Pool: 169.254.0.0/31
+                      mlagPeerL3IPv4Pool: 169.254.1.0/31
+                      mlagPeerL3Vlan: 4093
+                      mlagPeerVlan: 4094
+                      mlagPortChannelId: 2000
+                      virtualRouterMacAddress: 00:1c:73:00:00:99
+                    routerIdPool: 10.10.1.0/24
+                    spanningTreeDetails:
+                      spanningTreeMode: MSTP
+                      spineSpanningTreePriority: 4096
+                    vtepLoopbackIPv4Pool: 10.11.1.0/24
+                  spines: []
+                  thirdPartyDevices: []
+              tags:
+                query: Campus-Pod:BUILDING_A
+      tags:
+        query: Campus:ABC_CAMPUS
+  campusServices: []
+  campusServicesSettings:
+    cvFeatureSettings:
+      dhcpSnoopingForClientId: false
+  tenants:
+    - evpnMulticast:
+        igmpSnoopingQuerier:
+          enabled: 'No'
+        l2Multicast:
+          enabled: 'No'
+        l3Multicast:
+          enabled: 'No'
+      l2Vlans: []
+      macVrfVniBase: 10000
+      name: Tenant1
+      vrfs:
+        - bgp: {}
+          dhcpHelpers: []
+          evpnMulticast: {}
+          l3Interfaces: []
+          name: VRF1
+          ospfConfiguration: {}
+          overrideAttributes: {}
+          redistributeOspf: true
+          staticRoutes: []
+          svis:
+            - addressLocking: {}
+              devices:
+                - tagQuery:
+                    tags:
+                      query: Campus-Pod:BUILDING_A
+              dhcpServerDetails: []
+              enabled: 'Yes'
+              eosCli: null
+              evpnL2Multicast: {}
+              evpnL3Multicast: {}
+              id: 10
+              igmpSnoopingEnabled: 'No'
+              igmpSnoopingQuerier: {}
+              ipAddressVirtual: 10.10.10.1/24
+              mtu: 1500
+              multicast: {}
+              name: VLAN10
+              nodes: []
+              overrideAttributes: {}
+              pods: []
+              vxlan: 'Yes'
+            - addressLocking: {}
+              devices:
+                - tagQuery:
+                    tags:
+                      query: Campus-Pod:BUILDING_A
+              dhcpServerDetails: []
+              enabled: 'Yes'
+              eosCli: null
+              evpnL2Multicast: {}
+              evpnL3Multicast: {}
+              id: 20
+              igmpSnoopingEnabled: 'No'
+              igmpSnoopingQuerier: {}
+              ipAddressVirtual: 20.20.20.1/24
+              mtu: 1500
+              multicast: {}
+              name: VLAN20
+              nodes: []
+              overrideAttributes: {}
+              pods: []
+              vxlan: 'Yes'
+          vrfAdditionalRouteTargets: []
+          vrfBgpPeers: []
+          vrfId: 1
+          vrfMlagIbgpPeeringDetails:
+            ibgpPeeringIpv4Pool: 169.254.1.0/31
+            ibgpVlanId: 4093
+          vtepDiagnostic:
+            campuses:
+              - inputs:
+                  campusPods:
+                    - inputs:
+                        ipv4Pool: 10.255.10.0/24
+                      tags:
+                        query: Campus-Pod:BUILDING_A
+                tags:
+                  query: Campus:ABC_CAMPUS
+            loopbackInterface: Loopback101

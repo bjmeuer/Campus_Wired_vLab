@@ -1,0 +1,69 @@
+path: []
+inputs:
+  deviceAddressing: []
+  dnsAssignment:
+    - inputs:
+        value:
+          managementVrf: MGMT
+          sourceInterface: Use OOB Management Interface
+      tags:
+        query: Campus-Pod:BUILDING_A AND NOT Role:Member-Leaf
+    - inputs:
+        value:
+          managementVrf: default
+          sourceInterface: Vlan900
+      tags:
+        query: Campus-Pod:BUILDING_A AND Role:Member-Leaf
+  managementProfiles:
+    - defaultGateway: {}
+      dnsDomainList: []
+      dnsServers:
+        dnsServers:
+          - dnsServerIp: 8.8.8.8
+          - dnsServerIp: 8.8.4.4
+        sourceInterface: Use OOB Management Interface
+      enabled: 'Yes'
+      ipConfiguration:
+        ipv4Configuration:
+          defaultRouteFromDhcp: null
+          dhcp: Disabled
+      managementVrf: MGMT
+      profileName: OOB_Connected_Device
+    - defaultGateway: {}
+      dnsDomainList: []
+      dnsServers:
+        dnsServers:
+          - dnsServerIp: 8.8.8.8
+          - dnsServerIp: 8.8.4.4
+        sourceInterface: Vlan900
+      enabled: 'Yes'
+      ipConfiguration:
+        ipv4Configuration:
+          dhcp: null
+      managementVrf: default
+      profileName: Inband_Connected_Device
+  profileAssignment:
+    - inputs:
+        networkProfile: OOB_Connected_Device
+      tags:
+        query: Campus-Pod:BUILDING_A AND NOT Role:Member-Leaf
+    - inputs:
+        networkProfile: Inband_Connected_Device
+      tags:
+        query: Campus-Pod:BUILDING_A AND Role:Member-Leaf
+  subnetConfigAssignment:
+    - inputs:
+        assignments:
+          eosCli: null
+          iPv4AddressConfig:
+            ipv4Gateways:
+              - ipv4Address: 172.100.36.1
+            reservedRangesIPv4:
+              - endIPv4: 172.100.36.1
+                startIPv4: 172.100.36.1
+              - endIPv4: 172.100.36.240
+                startIPv4: 172.100.36.200
+            staticAddressAssignmentPoolv4: 172.100.36.0/24
+          iPv6AddressConfig: {}
+      tags:
+        query: Campus-Pod:BUILDING_A AND NOT Role:Member-Leaf

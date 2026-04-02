@@ -1,0 +1,39 @@
+---
+type: l2leaf
+
+default_mgmt_method: inband
+
+l2leaf:
+  defaults:
+    platform: 720XP-48Y6
+
+    # UPLINK MANAGEMENT
+    uplink_switches: ['BA-Leaf1a', 'BA-Leaf1b']
+    uplink_interfaces: ['Ethernet53', 'Ethernet54']
+    uplink_interface_speed: forced 100gfull
+    max_uplink_switches: 2
+    max_parallel_uplinks: 2
+
+    # Activate or deactivate IGMP snooping | Optional, default is true
+    igmp_snooping_enabled: false
+
+    ## MLAG CONFIGURATION MANAGEMENT ##
+    mlag_peer_ipv4_pool: 10.250.1.0/31
+
+    # Spanning-Tree Settings
+    spanning_tree_priority: 16384
+    spanning_tree_mode: mstp
+    
+    # Inbanb management for L2 Memberleafs
+    inband_mgmt_vlan: 900
+    inband_mgmt_subnet: 172.100.37.0/24
+
+  node_groups:
+    - group: BA_IDF1_MemberLeafs
+      nodes:
+        - name: BA-MemberLeaf1
+          id: 13
+          rack: RACK2
+          serial_number: BAMEMBERLEAF1
+          system_mac_address: 00:1c:11:11:ba:13
+          uplink_switch_interfaces: ['Ethernet48', 'Ethernet48']

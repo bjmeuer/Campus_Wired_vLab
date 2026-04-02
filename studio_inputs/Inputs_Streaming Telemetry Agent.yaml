@@ -1,0 +1,22 @@
+path: []
+inputs:
+  disableAAAResolver:
+    - inputs:
+        disableAAA: true
+      tags:
+        query: Campus:ABC_CAMPUS
+  multi_cluster: false
+  onboardingProfiles: []
+  sourceVrfAssignment:
+    - inputs:
+        vrf_and_source_interface_group:
+          source_interface: Management1
+          source_vrf: MGMT
+      tags:
+        query: Campus-Pod:BUILDING_A AND NOT Role:Member-Leaf
+    - inputs:
+        vrf_and_source_interface_group:
+          source_interface: Vlan900
+          source_vrf: null
+      tags:
+        query: Campus-Pod:BUILDING_A AND Role:Member-Leaf

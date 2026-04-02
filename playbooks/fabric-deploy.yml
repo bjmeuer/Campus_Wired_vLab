@@ -1,0 +1,19 @@
+---
+#
+# This playbook builds configs and deploys them using Ansible CVP
+# use build or deploy tags to filter actions if required
+#
+- name: Configuration deployment with CVP
+  hosts: ABC_CAMPUS
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Deploy configurations and tags to CloudVision
+      tags: [clab_provision]
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_configlet_name_template: "AVD-${hostname}"
+        cv_verify_certs: false
+        cv_strict_tags: false
+        cv_inventory_hostname: "cvaas"

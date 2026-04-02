@@ -1,0 +1,38 @@
+---
+type: l3spine
+
+# Spine Switches
+l3spine:
+  defaults:
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    loopback_ipv4_pool: 10.10.2.0/24
+    mlag_peer_ipv4_pool: 192.168.0.0/24
+    mlag_peer_l3_ipv4_pool: 10.1.1.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    mlag_interfaces: [Ethernet31/1, Ethernet32/1]
+
+    # Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
+    bgp_defaults:
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+
+  node_groups:
+    - group: BB_SPINES
+      bgp_as: 65002
+
+      nodes:
+        - name: BB-Spine1
+          id: 1
+          mgmt_ip: 172.100.36.21/24
+          rack: RACK1
+          serial_number: BBSPINE1
+          system_mac_address: 00:1c:11:11:bb:01
+
+        - name: BB-Spine2
+          id: 2
+          mgmt_ip: 172.100.36.22/24
+          rack: RACK2
+          serial_number: BBSPINE2
+          system_mac_address: 00:1c:11:11:bb:02

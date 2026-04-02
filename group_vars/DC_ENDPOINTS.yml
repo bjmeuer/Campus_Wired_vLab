@@ -1,0 +1,45 @@
+---
+# link to docu: https://avd.sh/en/latest/roles/eos_designs/doc/connected-endpoints.html
+servers:
+  - name: srv1
+    adapters:
+      - endpoint_ports: ['eth1', eth2]
+        switch_ports: ['Ethernet1', 'Ethernet1']
+        switches: ['DC1-Leaf1a', 'DC1-Leaf1b']
+        profile: hosting100_PO
+      - endpoint_ports: ['eth3']
+        switch_ports: ['Ethernet1']
+        switches: ['DC1-Leaf2a']
+        profile: hosting200
+      - endpoint_ports: ['eth4']
+        switch_ports: ['Ethernet1']
+        switches: ['DC1-Leaf2b']
+        profile: hosting20
+      - endpoint_ports: ['eth9', eth10]
+        switch_ports: ['Ethernet2', 'Ethernet2']
+        switches: ['DC1-Leaf2a', 'DC1-Leaf2b']
+        profile: hosting200_PO
+      - endpoint_ports: ['eth5']
+        switch_ports: ['Ethernet1']
+        switches: ['DC2-Leaf1a']
+        profile: hosting100
+      - endpoint_ports: ['eth6']
+        switch_ports: ['Ethernet1']
+        switches: ['DC2-Leaf1b']
+        profile: hosting10
+      - endpoint_ports: ['eth11', eth12]
+        switch_ports: ['Ethernet2', 'Ethernet2']
+        switches: ['DC2-Leaf1a', 'DC2-Leaf1b']
+        profile: hosting100_PO
+      - endpoint_ports: ['eth7']
+        switch_ports: ['Ethernet1']
+        switches: ['DC2-Leaf2a']
+        profile: hosting200
+      - endpoint_ports: ['eth8']
+        switch_ports: ['Ethernet1']
+        switches: ['DC2-Leaf2b']
+        profile: hosting20
+      - endpoint_ports: ['eth13', eth14]
+        switch_ports: ['Ethernet2', 'Ethernet2']
+        switches: ['DC2-Leaf2a', 'DC2-Leaf2b']
+        profile: hosting200_PO

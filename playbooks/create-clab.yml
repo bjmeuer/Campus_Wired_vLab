@@ -1,0 +1,33 @@
+---
+#
+# This playbook creates a containerlab file
+#
+- name: Create avd nodes specific files
+  hosts: ABC_CAMPUS
+  gather_facts: false
+  tasks:
+    - name: 'Create avd nodes specific files'
+      ansible.builtin.include_role:
+        name: eos_designs_to_containerlab
+        tasks_from: create_avd_node_files
+
+- name: Deploy containerlab topology
+  hosts: SIMULATION
+  gather_facts: false
+  vars_prompt:
+    - name: 'ansible_user'
+      prompt: 'Enter the containerlab user'
+    - name: 'ansible_password'
+      prompt: 'Enter the containerlab password'
+      private: yes
+  vars:
+    ansible_become_password: "{{ ansible_password }}"
+    ansible_connection: ssh
+    ansible_become: true
+    ansible_become_method: sudo
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: 'Create and deploy containerlab topology'
+      ansible.builtin.include_role:
+        name: eos_designs_to_containerlab
+        tasks_from: deploy

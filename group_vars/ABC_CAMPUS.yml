@@ -1,0 +1,271 @@
+---
+generate_cv_tags:
+  topology_hints: true
+  campus_fabric: true
+
+fabric_name: ABC_CAMPUS
+
+management_eapi:
+  enabled: true
+  enable_https: true
+  vrfs:
+    - name: MGMT
+      enabled: true
+
+# Clock timezone | Optional
+timezone: "Europe/Berlin"
+
+# Daemon TerminAttr config
+cv_settings:
+  cvaas:
+    enabled: true
+  terminattr:
+    disable_aaa: true
+
+# sflow config
+sflow_settings:
+  export_to_cloudvision:
+    enabled: true
+
+# Aliases
+custom_structured_configuration_aliases: |
+ alias bs show ip bgp summary
+ alias es show bgp evpn summary
+ alias grep show running section %1
+ alias ic show interface counter | nz
+ alias ie show interface counter errors | nz
+ alias ipa show ip interface brief
+ alias ipr show ip route
+ alias ir show interface counter rates | nz
+ alias po show port-channel summary
+
+# AAA
+aaa_settings:
+  authentication:
+    login:
+      default: local
+    policies:
+      on_failure_log: true
+      on_success_log: true
+  authorization:
+    exec:
+      default: local
+    config_commands: false
+    serial_console: true
+  local_users:
+    - name: cvpadmin
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$bpFAYEKoeJSYWOe1$lwyBKm88WuVEYn28cCfNGF2udecLklBfUaB5aT9XH3ZjW.ihivhMOMb2Txgj3sNtZcIMfFLD6Hp25DU4FlfFm."
+
+
+# BANNERS
+custom_structured_configuration_banners:
+  login: |
+    ----------------------------  W A R N I N G  -----------------------------
+    -     Access to this system is restricted to authorized users only.      -
+    -     All data residing on this system is the property of xxxxxxx.       -
+    -     All activities on this system may be monitored.                    -
+    -     Unauthorized usage is prohibited and may attract penalties.        -
+    --------------------------------------------------------------------------
+    Device: $(hostname)
+    EOF
+  motd: |
+    ----------------------------  W A R N I N G  -----------------------------
+    -     Access to this system is restricted to authorized users only.      -
+    -     All data residing on this system is the property of xxxxxxx.       -
+    -     All activities on this system may be monitored.                    -
+    -     Unauthorized usage is prohibited and may attract penalties.        -
+    --------------------------------------------------------------------------
+    Device: $(hostname)
+    EOF
+
+# INTERNAL VLAN ORDER
+internal_vlan_order:
+  allocation: descending
+  range:
+    beginning: 3600
+    ending: 3999
+
+# Management Console
+custom_structured_configuration_management_console:
+  idle_timeout: 300
+
+# Standard ACLs
+custom_structured_configuration_standard_access_lists:
+  - name: VTY_ACL
+    counters_per_entry: false
+    sequence_numbers:
+      - sequence: 10
+        action: permit any
+
+# Management SSH
+ssh_settings:
+  idle_timeout: 300
+  enabled: false
+  vrfs:
+    - name: "{{ mgmt_interface_vrf }}"
+      enabled: true
+      ipv4_acl: VTY_ACL
+
+# IP SSH Client Source Interfaces
+custom_structured_configuration_ip_ssh_client_source_interfaces:
+  - name: "{{ mgmt_interface }}"
+    vrf: "{{ mgmt_interface_vrf }}"
+
+# Event Handler
+event_handlers:
+  - name: CONFIG_VERSIONING
+    # yamllint disable rule:line-length
+    actions:
+      bash_command: FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
+    # yamllint enable
+    delay: 0
+    trigger: on-startup-config
+
+# Event Monitor
+event_monitor:
+  enabled: true
+
+# Load Interval
+load_interval:
+  default: 5
+
+snmp_settings:
+  contact: InfraTeam
+  location: true
+  compute_local_engineid: true
+  compute_local_engineid_source: hostname_and_ip
+  compute_v3_user_localized_key: true
+  users:
+    - name: checkmk
+      group: monitoring
+      version: v3
+      auth: sha512
+      auth_passphrase: auth_pass
+      priv: aes
+      priv_passphrase: priv_pass
+  views:
+    - name: all
+      mib_family_name: ".1"
+      included: true
+  groups:
+    - name: monitoring
+      version: v3
+      authentication: priv
+      read: all
+  vrfs:
+    - name: default
+      enable: false
+    - name: "{{ mgmt_interface_vrf }}"
+      enable: true
+
+
+# ARP aging timeout (should be lower than mac aging timeout which is per default 300)
+general_settings:
+  arp:
+    aging:
+      timeout_default: 290
+
+mac_address_table:
+  aging_time: 300
+
+
+# Underlay routing protocol | Required.
+underlay_routing_protocol: EBGP
+overlay_routing_protocol: EBGP
+
+# Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumberred.
+underlay_rfc5549: true
+
+overlay_mlag_rfc5549: true
+
+# Enabling using the same subnet for all MLAG links
+fabric_ip_addressing:
+  mlag:
+    algorithm: same_subnet
+
+# Point to Point Links MTU | Required.
+p2p_uplinks_mtu: 9214
+
+# BGP multi-path | Optional
+bgp_maximum_paths: 4
+bgp_ecmp: 4
+
+# EVPN ebgp-multihop | Optional
+# Default of 3, the recommended value for a 3 stage spine and leaf topology.
+evpn_ebgp_multihop: 3
+
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: false
+
+default_igmp_snooping_enabled: false
+
+# BFD Multihop tuning | Required.
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+## EVPN Host Flapping Settings
+evpn_hostflap_detection:
+  # If set to false it will disable EVPN host-flap detection
+  enabled: true
+  # Minimum number of MAC moves that indicate a MAC duplication issue
+  threshold: 15
+  # Time (in seconds) to detect a MAC duplication issue
+  window: 180
+  # Time (in seconds) to purge a MAC duplication issue
+  expiry_timeout: 150
+
+# Enable VPN import pruning (Min. EOS 4.24.2F)
+# The Route Target extended communities carried by incoming VPN paths will
+# be examined. If none of those Route Targets have been configured for import,
+# the path will be immediately discarded
+evpn_import_pruning: true
+
+# Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
+# This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
+# from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
+evpn_prevent_readvertise_to_server: true
+
+# bgp peer groups passwords
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    password: 7x4B4rnJhZB438m9+BrBfQ==
+  evpn_overlay_peers:
+    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+  mlag_ipv4_underlay_peer:
+    password: 4b21pAdCvWeAqpcKDFMdWw==
+
+# OOB Management network default gateway.
+mgmt_gateway: 172.100.36.1
+mgmt_vrf_routing: false
+mgmt_interface: Management1
+mgmt_interface_vrf: MGMT
+mgmt_destination_networks:
+  - 0.0.0.0/0
+
+### DNS ###
+dns_settings:
+  domain: abc-campus.local
+  servers:
+    - ip_address: "8.8.8.8"
+    - ip_address: "8.8.4.4"
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
+ntp_settings:
+  servers:
+    - name: 216.239.35.0
+      iburst: true
+      minpoll: 6
+      maxpoll: 8
+    - name: 216.239.35.4
+      iburst: true
+      minpoll: 6
+      maxpoll: 8
+    - name: 216.239.35.8
+      iburst: true
+      minpoll: 6
+      maxpoll: 8
+  authenticate: false

@@ -1,0 +1,41 @@
+---
+
+# L3 Edge port definitions. This can be any port in the entire Fabric, where IP interfaces are defined.
+# l3_edge:
+#   p2p_links_profiles:
+#     - name: DCI_profile
+#       ip_pool: DCI_IP_pool
+#       as: [65001, 65002]
+#       include_in_underlay_protocol: true
+#       speed: forced 100gfull
+#       ipv6_enable: true
+#   p2p_links:
+#     - id: 1
+#       nodes: [DC1-Spine1, DC2-Spine1]
+#       interfaces: [Ethernet29/1, Ethernet29/1]
+#       profile: DCI_profile
+#       descriptions:
+#         - DCI DC2-Spine1 Eth29/1
+#         - DCI DC1-Spine1 Eth29/1
+#     - id: 2
+#       nodes: [DC1-Spine1, DC2-Spine2]
+#       interfaces: [Ethernet30/1, Ethernet29/1]
+#       profile: DCI_profile
+#       descriptions:
+#         - DCI DC2-Spine2 Eth29/1
+#         - DCI DC1-Spine1 Eth30/1
+#     - id: 3
+#       nodes: [DC1-Spine2, DC2-Spine1]
+#       interfaces: [Ethernet29/1, Ethernet30/1]
+#       profile: DCI_profile
+#       descriptions:
+#         - DCI DC2-Spine1 Eth30/1
+#         - DCI DC1-Spine2 Eth29/1
+#     - id: 4
+#       nodes: [DC1-Spine2, DC2-Spine2]
+#       interfaces: [Ethernet30/1, Ethernet30/1]
+#       profile: DCI_profile
+#       descriptions:
+#         - DCI DC2-Spine2 Eth30/1
+#         - DCI DC1-Spine2 Eth30/1
+

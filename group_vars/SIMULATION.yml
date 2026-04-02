@@ -1,0 +1,25 @@
+---
+sim_env: clab
+sim_include_avd_external_nodes: true
+sim_ceos_version: ceos:4.33.4M
+sim_external_node_one_container: false
+sim_external_nodes_map:
+  server:
+    kind: 'linux'
+    image: 'alpine:edge'
+containerlab_vxlan_base: 5000
+containerlab_custom_interface_mapping: true
+containerlab_custom_interface_mapping_same_number: true
+containerlab_enforce_startup_config: true
+sim_topology_file_name: "Campus_Wired_vLab"
+containerlab_mgmt_network: 172.100.36.0/24
+containerlab_prefix: '""'
+containerlab_labname: "Campus_Wired_vLab"
+containerlab_mgmt_network_name: "Campus_Wired_vLab"
+containerlab_deploy_on_hosts: true
+containerlab_serial_sysmac: true
+containerlab_deploy_startup_batches: 15
+containerlab_linux_kind_bind_dir: binds
+sim_ztp: true
+sim_ztp_folder: binds/ztp/
+containerlab_set_platform: true

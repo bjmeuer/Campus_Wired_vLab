@@ -1,0 +1,67 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: 7050SX3-48YC8
+
+    # UPLINK MANAGEMENT
+    uplink_switches: ['BA-Spine1', 'BA-Spine2']
+    uplink_interfaces: ['Ethernet53/1', 'Ethernet54/1']
+    uplink_interface_speed: forced 100gfull
+    max_uplink_switches: 2
+    max_parallel_uplinks: 2
+
+    # LOOPBACK AND VTEP MANAGEMENT
+    loopback_ipv4_pool: 10.10.1.0/24
+    vtep_loopback_ipv4_pool: 10.11.1.0/24
+    vtep_loopback: Loopback1
+
+    # Activate or deactivate IGMP snooping | Optional, default is true
+    igmp_snooping_enabled: false
+
+    ## MLAG CONFIGURATION MANAGEMENT ##
+    mlag_peer_ipv4_pool: 169.254.0.0/31
+    mlag_peer_l3_ipv4_pool: 169.254.1.0/31
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_interfaces: ['Ethernet55/1', 'Ethernet56/1']
+    mlag_ibgp_origin_incomplete: true
+    mlag_interfaces_speed: forced 100gfull
+    mlag_port_channel_id: 999
+
+    # Virtual router mac
+    virtual_router_mac_address: 00:1c:73:00:00:99
+
+    # Spanning-Tree Settings
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+    # BGP Settings
+    bgp_defaults:
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+
+    # Enable Inband ZTP on L3 Leafs
+    inband_ztp: true
+
+  node_groups:
+    - group: BA_IDF1_Leafs
+      bgp_as: 65101
+      nodes:
+        - name: BA-Leaf1a
+          id: 11
+          mgmt_ip: 172.100.36.101/24
+          rack: RACK1
+          serial_number: BALEAF1A
+          system_mac_address: 00:1c:11:11:ba:11
+          uplink_switch_interfaces: ['Ethernet1/1', 'Ethernet1/1']
+
+        - name: BA-Leaf1b
+          id: 12
+          mgmt_ip: 172.100.36.102/24
+          rack: RACK1
+          serial_number: BALEAF1B
+          system_mac_address: 00:1c:11:11:ba:12
+          uplink_switch_interfaces: ['Ethernet2/1', 'Ethernet2/1']

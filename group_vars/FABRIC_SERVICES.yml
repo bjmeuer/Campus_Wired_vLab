@@ -1,0 +1,39 @@
+---
+tenants:
+  - name: Production-Networks
+    mac_vrf_vni_base: 10000
+
+    l2vlans:
+      - id: 10
+        name: stretchedVlan1
+        tags: ['fabric']
+      - id: 20
+        name: stretchedVlan2
+        tags: ['fabric']
+      - id: 30
+        name: stretchedVlan3
+        tags: ['fabric']
+
+    vrfs:
+      - name: HOSTING
+        vrf_id: 1
+        mlag_ibgp_peering_vlan: 4093
+
+        vtep_diagnostic:
+          loopback: 100
+          loopback_description: Diagnostic_Loopback
+          loopback_ip_range: 10.200.0.0/24
+
+        svis:
+          - id: 100
+            name: L3Network1
+            tags: ['fabric']
+            description: L3 Network1
+            enabled: true
+            ip_address_virtual: 100.100.100.1/24
+          - id: 200
+            name: L3Network2
+            tags: ['fabric']
+            description: L3 Network2
+            enabled: true
+            ip_address_virtual: 200.200.200.1/24

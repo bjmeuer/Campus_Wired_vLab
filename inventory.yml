@@ -1,0 +1,70 @@
+---
+all:
+  children:
+    SIMULATION:
+      hosts:
+        CL_1:
+          ansible_host: 10.100.163.230
+
+    CVAAS:
+      hosts:
+        cvaas:
+          ansible_host: www.cv-prod-euwest-2.arista.io
+
+    CLIENTS:
+      hosts:
+        srv1:
+
+    ABC_CAMPUS:
+      vars: 
+        campus: ABC_CAMPUS
+
+      children:
+
+        CAMPUS_SPINES:
+          children:
+            BA_SPINES:
+              vars: 
+                campus_pod: BUILDING_A
+              hosts:
+                BA-Spine1:
+                BA-Spine2:
+            # BB_SPINES:
+            #   vars: 
+            #     campus_pod: BUILDING_B
+            #   hosts:
+            #     BB-Spine1:
+            #     BB-Spine2:
+
+        CAMPUS_LEAFS:
+          children:
+            BA_IDF1:
+              vars: 
+                campus_pod: BUILDING_A
+                campus_access_pod: BA_IDF1
+              children:
+                BA_IDF1_Leafs:
+                  hosts:
+                    BA-Leaf1a:
+                    BA-Leaf1b:
+                BA_IDF1_MemberLeafs:
+                  hosts:
+                    BA-MemberLeaf1:
+            # BB_IDF1:
+            #   vars: 
+            #     campus_pod: BUILDING_B
+            #     campus_access_pod: BB_IDF1
+            #   hosts:
+            #     BB-Leaf1a:
+            #     BB-Leaf1b:
+            #     BB-MemeberLeaf1:
+
+      # FABRIC_SERVICES:
+      #   children:
+      #     CAMPUS_LEAFS:
+      # PORT_PROFILES:
+      #   children:
+      #     CAMPUS_LEAFS:
+      # DC_ENDPOINTS:
+      #   children:
+      #     CAMPUS_LEAFS:

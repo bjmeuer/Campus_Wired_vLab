@@ -1,0 +1,113 @@
+---
+clab_vars: |
+  exec:
+    - ip route add default via 172.100.36.65 dev eth0
+    - apk --no-cache add tzdata tcpdump iproute2 bonding
+    - ip link set dev eth1 down
+    - ip link set dev eth1 address aa:c1:ab:bb:11:01
+    - ip netns add srv100
+    - ip link set eth1 netns srv100
+    - ip link set dev eth2 down
+    - ip link set dev eth2 address aa:c1:ab:bb:11:02
+    - ip netns add srv100
+    - ip link set eth2 netns srv100
+    - ip netns exec srv100 ip link add dev bond0 type bond
+    - ip netns exec srv100 ip link set bond0 type bond miimon 100 mode 802.3ad lacp_rate fast xmit_hash_policy layer2+3
+    - ip netns exec srv100 ip link set eth1 master bond0
+    - ip netns exec srv100 ip link set eth2 master bond0
+    - ip netns exec srv100 ip addr add 100.100.100.101/24 dev bond0
+    - ip netns exec srv100 ip link set bond0 up
+    - ip netns exec srv100 ip route add default via 100.100.100.1
+
+    - ip link set dev eth3 down
+    - ip link set dev eth3 address aa:c1:ab:bb:11:03
+    - ip netns add srv3
+    - ip link set eth3 netns srv3
+    - ip netns exec srv3 ip addr add 200.200.200.103/24 dev eth3
+    - ip netns exec srv3 ip link set dev eth3 up
+    - ip netns exec srv3 ip route add default via 200.200.200.1
+
+    - ip link set dev eth4 down
+    - ip link set dev eth4 address aa:c1:ab:bb:11:04
+    - ip netns add srv4
+    - ip link set eth4 netns srv4
+    - ip netns exec srv4 ip addr add 20.20.20.101/24 dev eth4
+    - ip netns exec srv4 ip link set dev eth4 up
+
+    - ip link set dev eth5 down
+    - ip link set dev eth5 address aa:c1:ab:bb:11:05
+    - ip netns add srv5
+    - ip link set eth5 netns srv5
+    - ip netns exec srv5 ip addr add 100.100.100.103/24 dev eth5
+    - ip netns exec srv5 ip link set dev eth5 up
+    - ip netns exec srv5 ip route add default via 100.100.100.1
+
+    - ip link set dev eth6 down
+    - ip link set dev eth6 address aa:c1:ab:bb:11:06
+    - ip netns add srv6
+    - ip link set eth6 netns srv6
+    - ip netns exec srv6 ip addr add 10.10.10.102/24 dev eth6
+    - ip netns exec srv6 ip link set dev eth6 up
+
+    - ip link set dev eth7 down
+    - ip link set dev eth7 address aa:c1:ab:bb:11:07
+    - ip netns add srv7
+    - ip link set eth7 netns srv7
+    - ip netns exec srv7 ip addr add 200.200.200.104/24 dev eth7
+    - ip netns exec srv7 ip link set dev eth7 up
+    - ip netns exec srv7 ip route add default via 200.200.200.1
+
+    - ip link set dev eth8 down
+    - ip link set dev eth8 address aa:c1:ab:bb:11:08
+    - ip netns add srv8
+    - ip link set eth8 netns srv8
+    - ip netns exec srv8 ip addr add 20.20.20.102/24 dev eth8
+    - ip netns exec srv8 ip link set dev eth8 up
+
+    - ip link set dev eth9 down
+    - ip link set dev eth9 address aa:c1:ab:cc:11:01
+    - ip netns add srv101
+    - ip link set eth9 netns srv101
+    - ip link set dev eth10 down
+    - ip link set dev eth10 address aa:c1:ab:cc:11:02
+    - ip netns add srv101
+    - ip link set eth10 netns srv101
+    - ip netns exec srv101 ip link add dev bond0 type bond
+    - ip netns exec srv101 ip link set bond0 type bond miimon 100 mode 802.3ad lacp_rate fast xmit_hash_policy layer2+3
+    - ip netns exec srv101 ip link set eth9 master bond0
+    - ip netns exec srv101 ip link set eth10 master bond0
+    - ip netns exec srv101 ip addr add 200.200.200.101/24 dev bond0
+    - ip netns exec srv101 ip link set bond0 up
+    - ip netns exec srv101 ip route add default via 200.200.200.1
+
+    - ip link set dev eth11 down
+    - ip link set dev eth11 address aa:c1:ab:cc:11:03
+    - ip netns add srv102
+    - ip link set eth11 netns srv102
+    - ip link set dev eth12 down
+    - ip link set dev eth12 address aa:c1:ab:cc:11:04
+    - ip netns add srv102
+    - ip link set eth12 netns srv102
+    - ip netns exec srv102 ip link add dev bond0 type bond
+    - ip netns exec srv102 ip link set bond0 type bond miimon 100 mode 802.3ad lacp_rate fast xmit_hash_policy layer2+3
+    - ip netns exec srv102 ip link set eth11 master bond0
+    - ip netns exec srv102 ip link set eth12 master bond0
+    - ip netns exec srv102 ip addr add 100.100.100.102/24 dev bond0
+    - ip netns exec srv102 ip link set bond0 up
+    - ip netns exec srv102 ip route add default via 100.100.100.1
+
+    - ip link set dev eth13 down
+    - ip link set dev eth13 address aa:c1:ab:cc:11:05
+    - ip netns add srv103
+    - ip link set eth13 netns srv103
+    - ip link set dev eth14 down
+    - ip link set dev eth14 address aa:c1:ab:cc:11:06
+    - ip netns add srv103
+    - ip link set eth14 netns srv103
+    - ip netns exec srv103 ip link add dev bond0 type bond
+    - ip netns exec srv103 ip link set bond0 type bond miimon 100 mode 802.3ad lacp_rate fast xmit_hash_policy layer2+3
+    - ip netns exec srv103 ip link set eth13 master bond0
+    - ip netns exec srv103 ip link set eth14 master bond0
+    - ip netns exec srv103 ip addr add 200.200.200.102/24 dev bond0
+    - ip netns exec srv103 ip link set bond0 up
+    - ip netns exec srv103 ip route add default via 200.200.200.1

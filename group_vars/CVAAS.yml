@@ -1,0 +1,21 @@
+ansible_user: cvaas
+# yamllint disable rule:line-length
+ansible_password: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaWQiOjc0ODY1MjM1NDYyMzYwOTY2NTEsImRzbiI6ImJtZXVlciIsImRzdCI6ImFjY291bnQiLCJleHAiOjE4MjQ4NDcxOTksImlhdCI6MTc1NDg5MzgwOSwib2dpIjo3NDg2NTIzNTQ2MjM2MDk2NDE4LCJvZ24iOiJibWV1ZXItbGFiLWV1Iiwic2lkIjoiZjY0ZTAxNzMyZTkzOGZlNGVhOWJjZWQ5Njg3ZmFlMTdmNDY5YTRjYWMyOTVmOTEyMzFlODM4ZWNiNWEzYjgzMC1RVW5POEhUX1U5VUFpTkFyT1BFOFZ3bjRPMGtqdjYwcnVoUFdDM3pBIn0.GdJNjVbYbswtuog_xYzcnuwx8J_jMcJPl_EbqjNKR4UQ3p6oXBwGr2QD5xdHbTxy1cgOeimpoNpLnLqJbgI2xQ
+# yamllint enable rule:line-length
+ansible_connection: httpapi
+ansible_network_os: eos
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: true
+ansible_httpapi_port: 443
+
+## CVP On-Prem
+# ansible_host: <CVP IP>
+# ansible_httpapi_host: <CVP IP>
+# ansible_user: <CVP UI USER>
+# ansible_password: <CVP UI Password >
+# ansible_connection: httpapi
+# ansible_network_os: eos
+# ansible_httpapi_use_ssl: true
+# ansible_httpapi_validate_certs: false
+# ansible_httpapi_port: 443
+# ansible_python_interpreter: $(which python3)

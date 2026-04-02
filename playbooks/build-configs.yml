@@ -1,0 +1,23 @@
+---
+#
+# This playbook builds the configs for the cEOS devices
+#
+- name: Build Configs
+  hosts: ABC_CAMPUS
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Reset local folders for output
+      tags: [build, provision]
+      ansible.builtin.import_role:
+        name: arista.avd.build_output_folders
+
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      tags: [build, provision]
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation
+      tags: [build, provision]
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
