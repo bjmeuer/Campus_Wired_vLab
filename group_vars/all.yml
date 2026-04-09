@@ -1,0 +1,31 @@
+---
+# Daemon TerminAttr config
+cv_settings:
+  cvaas:
+    enabled: true
+  terminattr:
+    disable_aaa: true
+
+### DNS ###
+dns_settings:
+  domain: abc-campus.local
+  servers:
+    - ip_address: "8.8.8.8"
+    - ip_address: "8.8.4.4"
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
+ntp_settings:
+  servers:
+    - name: 216.239.35.0
+      iburst: true
+      minpoll: 6
+      maxpoll: 8
+    - name: 216.239.35.4
+      iburst: true
+      minpoll: 6
+      maxpoll: 8
+    - name: 216.239.35.8
+      iburst: true
+      minpoll: 6
+      maxpoll: 8
+  authenticate: false

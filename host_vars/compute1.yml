@@ -1,0 +1,26 @@
+clab_vars: |
+  exec:
+    - ip route add default via 172.100.36.1 dev eth0
+    - apk --no-cache add tzdata tcpdump iproute2 bonding vlan
+    - ip netns add srv1
+    - ip link set dev eth1 down
+    - ip link set dev eth1 address aa:c1:ab:ba:11:04
+    - ip link set dev eth2 down
+    - ip link set dev eth2 address aa:c1:ab:ba:11:05
+    - ip link set eth1 netns srv1
+    - ip link set eth2 netns srv1
+    - ip netns exec srv1 ip link add dev bond0 type bond
+    - ip netns exec srv1 ip link set bond0 type bond miimon 100 mode 802.3ad xmit_hash_policy layer2+3
+    - ip netns exec srv1 ip link set eth1 master bond0
+    - ip netns exec srv1 ip link set eth2 master bond0
+    - ip netns exec srv1 ip link set bond0 up
+    - ip netns exec srv1 ip link add link bond0 name bond0.10 type vlan id 10
+    - ip netns exec srv1 ip addr add 10.10.10.100/24 dev bond0.10
+    - ip netns exec srv1 ip link set dev bond0.10 address aa:c1:ab:ba:10:01
+    - ip netns exec srv1 ip link set bond0.10 up
+    - ip netns exec srv1 ip route add default via 10.10.10.1
+    - ip netns exec srv1 ip link add link bond0 name bond0.20 type vlan id 20
+    - ip netns exec srv1 ip addr add 20.20.20.100/24 dev bond0.20
+    - ip netns exec srv1 ip link set dev bond0.20 address aa:c1:ab:ba:20:01
+    - ip netns exec srv1 ip link set bond0.20 up
+    - ip netns exec srv1 ip route add default via 20.20.20.1

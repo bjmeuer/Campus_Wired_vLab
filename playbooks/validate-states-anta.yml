@@ -1,6 +1,6 @@
 ---
 - name: "Run Fabric states validation"
-  hosts: DC_ALL
+  hosts: ABC_CAMPUS
   connection: local
   gather_facts: false
   tasks:

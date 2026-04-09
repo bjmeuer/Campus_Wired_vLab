@@ -2,7 +2,7 @@
 #
 # This playbook builds the configs for the cEOS devices
 #
-- name: Build Configs
+- name: Build Configs for Campus Fabric
   hosts: ABC_CAMPUS
   connection: local
   gather_facts: false
@@ -12,6 +12,22 @@
       ansible.builtin.import_role:
         name: arista.avd.build_output_folders
 
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      tags: [build, provision]
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation
+      tags: [build, provision]
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+
+- name: Build Configs for fabric external devices
+  hosts: EXTERNAL_ROUTER
+  connection: local
+  gather_facts: false
+  tasks:
     - name: Generate AVD Structured Configurations and Fabric Documentation
       tags: [build, provision]
       ansible.builtin.import_role:

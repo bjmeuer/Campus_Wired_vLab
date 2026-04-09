@@ -1,0 +1,155 @@
+---
+containerlab: |
+  network-mode: none
+  sim_ztp: disable
+
+fabric_name: EXTERNAL_ROUTER
+
+# OOB Management network default gateway.
+# mgmt_gateway: 172.100.36.1
+mgmt_vrf_routing: false
+mgmt_interface: Ethernet1
+mgmt_interface_vrf: default
+# mgmt_destination_networks:
+#   - 0.0.0.0/0
+
+
+# Define as l2leaf to be able to use eos_designs and with this cv_deploy
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: BA-Router1
+      mgmt_ip: &mgmtIp 172.100.36.250/24
+
+
+custom_structured_configuration_metadata:
+  platform: 7280SR3-48YC8
+  system_mac_address: '00:1c:11:11:ba:99'
+  serial_number: BAROUTER1
+
+custom_structured_configuration_ip_routing: true
+
+custom_structured_configuration_daemon_terminattr:
+  cvauth:
+    token_file: /mnt/flash/token
+  
+custom_structured_configuration_vrfs:
+  - name: MGMT
+    ip_routing: false
+  - name: INBAND_MGMT
+    ip_routing: true
+
+custom_structured_configuration_dhcp_servers:
+  - vrf: default
+    ipv4_subnets:
+      - subnet: 172.100.37.0/24
+        ranges:
+          - start: 172.100.37.200
+            end: 172.100.37.240
+        default_gateway: 172.100.37.1
+        dns_servers:
+          - 8.8.8.8
+          - 8.8.4.4
+        tftp_server:
+          file: http://172.100.36.253/bootstrap.py
+
+custom_structured_configuration_ethernet_interfaces:
+  - name: Ethernet49/1
+    ip_address: 192.168.1.1/31
+    mtu: 1500
+    shutdown: false
+    switchport:
+      enabled: false
+    dhcp_server_ipv4: true
+    metadata:
+      peer: BA-Spine1
+      peer_interface: Ethernet32/1
+      peer_type: routed
+  - name: Ethernet50/1
+    ip_address: 192.168.1.3/31
+    mtu: 1500
+    shutdown: false
+    switchport:
+      enabled: false
+    dhcp_server_ipv4: true
+    metadata:
+      peer: BA-Spine2
+      peer_interface: Ethernet32/1
+      peer_type: routed
+  - name: Ethernet1
+    ip_address: *mgmtIp
+    mtu: 1500
+    shutdown: false
+    switchport:
+      enabled: false
+    ip_nat:
+      source:
+        dynamic:
+          - access_list: dynAcl
+            nat_type: overload
+    eos_cli: |
+      mac-address router aac1.abdd.2222
+
+custom_structured_configuration_access_lists:
+  - name: dynAcl
+    sequence_numbers:
+      - sequence: 10
+        action: "permit ip any any"
+
+custom_structured_configuration_event_handlers:
+  - name: InbandMgmtOnboot
+    actions:
+      bash_command: |
+        ip route add default via 172.100.36.1 dev eth1
+        sysctl -w net.ipv4.ip_forward=1
+        iptables -I EOS_FORWARD 1 -s 172.100.37.0/24 -j ACCEPT
+        iptables -I EOS_FORWARD 2 -d 172.100.37.0/24 -j ACCEPT
+        iptables -t nat -I POSTROUTING 1 -o eth1 -j MASQUERADE
+    trigger: "on-boot"
+    delay: 150
+
+custom_structured_configuration_eos_cli: ip fhrp accept-mode
+
+custom_structured_configuration_router_bgp:
+  as: 65331
+  router_id: 100.100.100.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  redistribute:
+    static:
+      enabled: true
+    connected:
+      enabled: true
+  neighbors:
+    - ip_address: 192.168.1.0
+      maximum_routes: 0
+      remote_as: 65000
+      description: to_BA-SPINE1
+      shutdown: false
+      #password:  "7x4B4rnJhZB438m9+BrBfQ=="
+      default_originate:
+        enabled: true
+        always: true
+    - ip_address: 192.168.1.2
+      maximum_routes: 0
+      remote_as: 65000
+      description: to_BA-SPINE2
+      shutdown: false
+      #password:  "7x4B4rnJhZB438m9+BrBfQ=="
+      default_originate:
+        enabled: true
+        always: true
+  address_family_ipv4:
+    neighbors:
+      - ip_address: 192.168.1.0
+        activate: true
+      - ip_address: 192.168.1.2
+        activate: true

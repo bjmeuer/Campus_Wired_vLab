@@ -1,7 +1,7 @@
 ---
 sim_env: clab
 sim_include_avd_external_nodes: true
-sim_ceos_version: ceos:4.33.4M
+sim_ceos_version: ceos:4.35.3F
 sim_external_node_one_container: false
 sim_external_nodes_map:
   server:
@@ -20,6 +20,10 @@ containerlab_deploy_on_hosts: true
 containerlab_serial_sysmac: true
 containerlab_deploy_startup_batches: 15
 containerlab_linux_kind_bind_dir: binds
+containerlab_onboard_to_cvp_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhc2V0SUQiOjc0ODY1MjM1NDYyMzYwOTY0MTgsImV4cCI6MTc4NjExMDI1Mywia2lkIjoiMmFhZjdmMWViNDg2MzQzNSIsIm5iZiI6MTc1NDU3NDI1MywicmVlbnJvbGxEZXZpY2VzIjpbIioiXX0.rIEhGIxHDjq1snZ8ackWg5DwHwbnn652XMTlyLFmwV2yMli2HUxtiMuufDW6sRsEfEJkJLi8Hx57_mdnfDMunrJK-BErPkAFzoUufe_VawDxYfc3Bzt5NeB2QCmJuHOf7mB3n12cG_0qncSWnd_XeiDg2mfM2GQGz33xGlEjlvgVRNzMfGXYBaC8mKXpl1ja6ZdS1NIUPNct1LalvtcYIqgZuDg96E7yIQpCJmbIW0ZtjeEQ3l6Qq1BszfVghkVDj4Db-amFbwcLbTYkqyeCdfuw_KY5VEb3kXj_qXE2CT6EXt_n_URi2jQlvoqmNNyHCuuh8YJgzFB2TzQtR2269w
 sim_ztp: true
 sim_ztp_folder: binds/ztp/
 containerlab_set_platform: true
+containerlab_add_mgmt_links:
+  - intf: Ethernet1
+    node: BA-Router1

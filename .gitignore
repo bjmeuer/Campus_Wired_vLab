@@ -5,7 +5,7 @@ snapshots
 config_backup
 anta
 custom_anta_catalogs
-playbooks/eos_designs_to_containerlab
+playbooks/eos_designs_to_containerlab/
 
 
 # Byte-compiled / optimized / DLL files

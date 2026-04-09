@@ -3,7 +3,7 @@
 # This playbook creates a containerlab file
 #
 - name: Create avd nodes specific files
-  hosts: ABC_CAMPUS
+  hosts: ABC_CAMPUS, EXTERNAL_ROUTER
   gather_facts: false
   tasks:
     - name: 'Create avd nodes specific files'

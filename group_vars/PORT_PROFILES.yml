@@ -1,37 +1,22 @@
 ---
-# link to docu: https://avd.sh/en/latest/roles/eos_designs/doc/connected-endpoints.html
 port_profiles:
-  - profile: hosting10
-    mode: access
-    vlans: "10"
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-  - profile: hosting20
-    mode: access
-    vlans: "20"
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-  - profile: hosting100
-    mode: access
-    vlans: "100"
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-  - profile: hosting100_PO
-    mode: access
-    vlans: "100"
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    port_channel:
-      mode: active
-  - profile: hosting200
-    mode: access
-    vlans: "200"
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-  - profile: hosting200_PO
-    mode: access
-    vlans: "200"
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    port_channel:
-      mode: active
+- mode: trunk
+  profile: PP_TRUNK_EDGE
+  spanning_tree_bpdufilter: false
+  spanning_tree_bpduguard: true
+  spanning_tree_portfast: edge
+  storm_control: &id001 {}
+- mode: access
+  profile: PP_ACCESS_EDGE
+  spanning_tree_bpdufilter: false
+  spanning_tree_bpduguard: true
+  spanning_tree_portfast: edge
+  storm_control: *id001
+
+- parent_profile: PP_TRUNK_EDGE
+  profile: compute
+  vlans: "10,20"
+
+- parent_profile: PP_TRUNK_EDGE
+  profile: client
+  vlans: "10,20"

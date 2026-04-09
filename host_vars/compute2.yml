@@ -1,0 +1,19 @@
+clab_vars: |
+  exec:
+    - ip route add default via 172.100.36.1 dev eth0
+    - apk --no-cache add tzdata tcpdump iproute2 bonding vlan
+    - ip netns add srv1
+    - ip link set dev eth1 down
+    - ip link set dev eth1 address aa:c1:ab:ba:11:06
+    - ip link set eth1 netns srv1
+    - ip netns exec srv1 ip link set eth1 up
+    - ip netns exec srv1 ip link add link eth1 name eth1.10 type vlan id 10
+    - ip netns exec srv1 ip addr add 10.10.10.101/24 dev eth1.10
+    - ip netns exec srv1 ip link set dev eth1.10 address aa:c1:ab:ba:10:02
+    - ip netns exec srv1 ip link set eth1.10 up
+    - ip netns exec srv1 ip route add default via 10.10.10.1
+    - ip netns exec srv1 ip link add link eth1 name eth1.20 type vlan id 20
+    - ip netns exec srv1 ip addr add 20.20.20.101/24 dev eth1.20
+    - ip netns exec srv1 ip link set dev eth1.20 address aa:c1:ab:ba:20:02
+    - ip netns exec srv1 ip link set eth1.20 up
+    - ip netns exec srv1 ip route add default via 20.20.20.1

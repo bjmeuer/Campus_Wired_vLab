@@ -23,9 +23,21 @@ cv_settings:
     disable_aaa: true
 
 # sflow config
+fabric_sflow:
+  uplinks: true
+  downlinks: true
+  endpoints: true
+  l3_edge: true
+  core_interfaces: true
+  mlag_interfaces: true
+  l3_interfaces: true
 sflow_settings:
-  export_to_cloudvision:
-    enabled: true
+  sample:
+    rate: 16384
+  destinations:
+    - destination: 127.0.0.1
+      port: 6343
+      vrf: use_default_mgmt_method_vrf
 
 # Aliases
 custom_structured_configuration_aliases: |
@@ -245,27 +257,3 @@ mgmt_interface: Management1
 mgmt_interface_vrf: MGMT
 mgmt_destination_networks:
   - 0.0.0.0/0
-
-### DNS ###
-dns_settings:
-  domain: abc-campus.local
-  servers:
-    - ip_address: "8.8.8.8"
-    - ip_address: "8.8.4.4"
-
-# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
-ntp_settings:
-  servers:
-    - name: 216.239.35.0
-      iburst: true
-      minpoll: 6
-      maxpoll: 8
-    - name: 216.239.35.4
-      iburst: true
-      minpoll: 6
-      maxpoll: 8
-    - name: 216.239.35.8
-      iburst: true
-      minpoll: 6
-      maxpoll: 8
-  authenticate: false

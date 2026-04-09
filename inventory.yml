@@ -13,7 +13,12 @@ all:
 
     CLIENTS:
       hosts:
-        srv1:
+        compute1:
+        compute2:
+    
+    EXTERNAL_ROUTER:
+      hosts:
+        BA-Router1:
 
     ABC_CAMPUS:
       vars: 
@@ -62,9 +67,9 @@ all:
       # FABRIC_SERVICES:
       #   children:
       #     CAMPUS_LEAFS:
-      # PORT_PROFILES:
-      #   children:
-      #     CAMPUS_LEAFS:
-      # DC_ENDPOINTS:
-      #   children:
-      #     CAMPUS_LEAFS:
+    PORT_PROFILES:
+      children:
+        CAMPUS_LEAFS:
+    DC_ENDPOINTS:
+      children:
+        CAMPUS_LEAFS:
