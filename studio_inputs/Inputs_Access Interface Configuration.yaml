@@ -1,0 +1,76 @@
+path: []
+inputs:
+  campus:
+    - inputs:
+        campusPod:
+          - inputs:
+              accessPod:
+                - inputs:
+                    interfaces: []
+                  tags:
+                    query: Access-Pod:BA_IDF1
+            tags:
+              query: Campus-Pod:BUILDING_A
+      tags:
+        query: Campus:ABC_CAMPUS
+  portProfiles:
+    - description: null
+      dot1x: {}
+      enabled: null
+      eosCli: null
+      flowControl: {}
+      mode: null
+      name: compute
+      parentProfile: PP_TRUNK_EDGE
+      phone: {}
+      poe: {}
+      portChannel:
+        mlag: 'Yes'
+        portChannel: 'Yes'
+        portChannelEnabled: 'Yes'
+        portChannelMode: active
+      ptp: {}
+      qosProfile: null
+      spanningTree: {}
+      speed: null
+      stormControl: {}
+      vlans:
+        vlans: 10,20
+    - description: null
+      dot1x: {}
+      enabled: 'Yes'
+      eosCli: null
+      flowControl: {}
+      mode: trunk
+      name: PP_TRUNK_EDGE
+      parentProfile: null
+      phone: {}
+      poe: {}
+      portChannel: {}
+      ptp: {}
+      qosProfile: null
+      spanningTree:
+        bpduFilter: disabled
+        bpduGuard: enabled
+        portfast: edge
+      speed: null
+      stormControl: {}
+      vlans: {}
+    - description: null
+      dot1x: {}
+      enabled: null
+      eosCli: null
+      flowControl: {}
+      mode: null
+      name: client
+      parentProfile: PP_TRUNK_EDGE
+      phone: {}
+      poe: {}
+      portChannel: {}
+      ptp: {}
+      qosProfile: null
+      spanningTree: {}
+      speed: null
+      stormControl: {}
+      vlans:
+        vlans: 10,20

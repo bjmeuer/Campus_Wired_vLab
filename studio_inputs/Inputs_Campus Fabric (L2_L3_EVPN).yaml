@@ -15,7 +15,41 @@ inputs:
     legacyStudioBehaviors:
       bgpRedistributeAttachedHostsBehavior: false
       varpConvention: true
-    platformSettings: []
+    platformSettings:
+      - inputs:
+          platformSettingsGroup:
+            customPlatformSettings:
+              - eosCli: |-
+                  sflow sample 16384
+                  sflow vrf MGMT destination 127.0.0.1 6343
+                  sflow vrf MGMT source-interface Management1
+                  sflow run
+                featureSupport: {}
+                name: sflow
+                regexes:
+                  - .*
+                reloadDelays: {}
+                tcamProfile: null
+                tridentForwardingTablePartition: null
+        tags:
+          query: Campus-Pod:BUILDING_A AND NOT Role:Member-Leaf
+      - inputs:
+          platformSettingsGroup:
+            customPlatformSettings:
+              - eosCli: |-
+                  sflow sample 16384
+                  sflow destination 127.0.0.1 6343
+                  sflow source-interface Vlan900
+                  sflow run
+                featureSupport: {}
+                name: sflow
+                regexes:
+                  - .*
+                reloadDelays: {}
+                tcamProfile: null
+                tridentForwardingTablePartition: null
+        tags:
+          query: Campus-Pod:BUILDING_A AND Role:Member-Leaf
   campus:
     - inputs:
         campusDetails:
@@ -51,7 +85,10 @@ inputs:
                     vtepLoopbackIPv4Pool: 10.11.1.0/24
                   accessPods:
                     - inputs:
-                        accessPodFacts: {}
+                        accessPodFacts:
+                          leafs: []
+                          memberLeafMlagPairs: []
+                          memberLeafs: []
                       tags:
                         query: Access-Pod:BA_IDF1
                   advancedFabricSettings: {}
@@ -61,12 +98,51 @@ inputs:
                   design:
                     campusType: L3
                     vxlanOverlay: true
-                  egressConnectivity: {}
+                  egressConnectivity:
+                    externalDevices:
+                      - bgp:
+                          remoteAs: '65331'
+                          sendCommunity: all
+                        egressConnectionGroup:
+                          egressConnection: p2p
+                          egressRouting: eBGP
+                        egressInterfaces:
+                          - description: null
+                            egressInterfaceIpAddress: 192.168.1.0/31
+                            externalDeviceInterface: Ethernet49/1
+                            neighborIpAddress: 192.168.1.1/31
+                            password: null
+                            subinterfaces: []
+                            vrf: null
+                          - description: null
+                            egressInterfaceIpAddress: 192.168.1.2/31
+                            externalDeviceInterface: Ethernet50/1
+                            neighborIpAddress: 192.168.1.3/31
+                            password: null
+                            subinterfaces: []
+                            vrf: null
+                        eosCli: null
+                        multicast: {}
+                        name: BA-Router1
+                        neighborInfo: []
+                        ospf: {}
+                        portChannel: {}
+                        speed: null
+                        uplinkDeviceType: Router
+                        vlans: {}
                   fabricConfigurations:
                     inbandManagementDetails:
-                      accessPods: []
+                      accessPods:
+                        - inputs:
+                            inbandManagementDetails:
+                              inbandManagementSubnet: 172.100.37.0/24
+                          tags:
+                            query: Access-Pod:BA_IDF1
                       inbandManagementSubnet: 172.100.37.0/24
                       inbandManagementVlan: 900
+                      ipHelperAddresses:
+                        - dhcpServer: 192.168.1.1
+                        - dhcpServer: 192.168.1.3
                     ipLocking:
                       enable: false
                       ipv4LockingEnforcementEnabled: true

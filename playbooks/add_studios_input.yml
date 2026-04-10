@@ -1,0 +1,22 @@
+---
+
+- name: Add Studio Inputs to the relevant Studios
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_prompt:
+    - name: 'cv_token'
+      prompt: 'Enter a service token for cvp'
+    - name: 'cv_server'
+      prompt: 'Enter the cvaas location server name'
+      private: yes
+
+  tasks:
+    - name: Update Studios Inputs
+      ansible.builtin.command:
+        cmd: python3 ./cvp_studio_update.py --host {{ cv_server }} --new-workspace "script-update-studio-inputs-{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}" --build --submit --token {{ cv_token }}
+      register: python_result
+
+    - name: Result from Update Studios Inputs
+      debug:
+        msg: "{{ python_result }}"
