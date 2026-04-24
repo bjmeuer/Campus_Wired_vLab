@@ -7,9 +7,9 @@ anta
 custom_anta_catalogs
 playbooks/eos_designs_to_containerlab/
 studio_inputs_backup
-
+.claude
 */.DS_Store
-.DS_Store
+*DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

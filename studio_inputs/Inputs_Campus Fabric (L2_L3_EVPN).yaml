@@ -108,6 +108,9 @@ inputs:
                           egressRouting: eBGP
                         egressInterfaces:
                           - description: null
+                            egressInterface:
+                              tags:
+                                query: interface:Ethernet32/1@BASPINE1
                             egressInterfaceIpAddress: 192.168.1.0/31
                             externalDeviceInterface: Ethernet49/1
                             neighborIpAddress: 192.168.1.1/31
@@ -115,6 +118,9 @@ inputs:
                             subinterfaces: []
                             vrf: null
                           - description: null
+                            egressInterface:
+                              tags:
+                                query: interface:Ethernet32/1@BASPINE2
                             egressInterfaceIpAddress: 192.168.1.2/31
                             externalDeviceInterface: Ethernet50/1
                             neighborIpAddress: 192.168.1.3/31
